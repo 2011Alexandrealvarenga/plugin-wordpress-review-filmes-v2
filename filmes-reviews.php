@@ -21,6 +21,7 @@ class Filmes_reviews{
 
     private function __construct(){
         add_action('init', 'Filmes_reviews::register_post_type');
+        add_action('init', 'Filmes_reviews::register_taxonomies');
     }
     public static function register_post_type(){
         register_post_type('filmes_reviews',array(
@@ -37,8 +38,23 @@ class Filmes_reviews{
             'menu_position' =>  4,
         ));
     }
+    // taxonomias
+    public static function register_taxonomies(){
+        register_taxonomy('tipos_filmes', array('filmes_reviews'),
+            array(
+                'labels'            =>      array(
+                    'name'          =>      __('Filmes Tipos'),
+                    'singular_name' =>      __('Filme Tipo')
+                ),
+                'public'            =>      TRUE,
+                'hieararchical'     =>      TRUE,
+                'rewrite'           =>      array('slug'    =>  'tipos-filmes'),
+                )
+        );
+    }
     public static function activate(){
         self::register_post_type();
+        self::register_taxonomies();
         flush_rewrite_rules();
     }
 }
